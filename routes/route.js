@@ -1,9 +1,9 @@
 const express=require('express');
 const router=express.Router();
-const userModel=require('../model/model');
+const userModel=require('../model/model').userModel;
 const async=require('async');
 const crypto=require('crypto');
-
+const nodemailer=require('nodemailer');
 
 
 router.post('/forgot', function (req, res, next) {
@@ -115,9 +115,9 @@ router.get('/reset/:token', function(req, res) {
         };
         smtpTransport.sendMail(mailOptions, function(err,res) {
             if(err){
-                console.log('Error',err);
+                res.json({success:false,message:"sorry we couldn't send a mail"});
             } else{
-                console.log('Email Sent');
+                res.json({success:true,message:'Email Sent'})
             }
         });
       }
